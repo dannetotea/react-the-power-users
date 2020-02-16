@@ -6,7 +6,7 @@ import Users from "./modules/getUsers";
 function App() {
   return (
     <div className="App">
-      <Users />
+      <Users/>
     </div>
   );
 }

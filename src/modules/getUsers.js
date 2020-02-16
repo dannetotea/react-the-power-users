@@ -31,17 +31,36 @@ const Users = () => {
 
     };
 
+    const removeItem = (userId) => {
+        setUsers(users.filter(user => user.id !== userId));
+        setFilteredUsers(filteredUsers.filter(user => user.id !== userId));
+    };
+
     return (
-        <>
+        <div className="p-4">
             <Search searchValueChild={setSearchValue}/>
-            <ul className="list-group w-25">
+            <ul className="list-group w-50">
                 {searchValue ? filteredUsers.map(user => {
-                    return <li key={user.id} className="list-group-item">{user.name}</li>
+                    return (
+                        <div key={user.id} className="d-flex w-100 mb-2">
+                            <li className="list-group-item w-100 mr-2">{user.name}</li>
+                            <button type="button" className="btn btn-outline-danger"
+                                    onClick={() => removeItem(user.id)}>Remove
+                            </button>
+                        </div>
+                    )
                 }) : users.map(user => {
-                    return <li key={user.id} className="list-group-item">{user.name}</li>
+                    return (
+                        <div key={user.id} className="d-flex w-100 mb-2">
+                            <li className="list-group-item w-100 mr-2">{user.name}</li>
+                            <button type="button" className="btn btn-outline-danger"
+                                    onClick={() => removeItem(user.id)}>Remove
+                            </button>
+                        </div>
+                    )
                 })}
             </ul>
-        </>
+        </div>
     )
 };
 
