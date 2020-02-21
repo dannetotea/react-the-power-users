@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
 import Search from "../components/search";
 
-const Users = () => {
 
+const Users = () => {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [searchValue, setSearchValue] = useState('');
@@ -18,7 +18,7 @@ const Users = () => {
     const usersGenerator = () => {
         let users = [];
         for (let i = 1; i <= 100; i++) {
-            users.push({id: i, name: `User ${i}`});
+            users.push({id: i, name: `User ${i}`, counter: 0});
         }
         setUsers(users);
     };
@@ -29,6 +29,16 @@ const Users = () => {
             setFilteredUsers(result)
         }, 300);
 
+    };
+
+    const increment = (userId) => {
+        let newArray = [...users];
+        users.forEach((user,index) => {
+            if(user.id !== userId){
+                newArray[index].counter++;
+            }
+        });
+        setUsers(newArray);
     };
 
     const removeItem = (userId) => {
@@ -52,7 +62,11 @@ const Users = () => {
                 }) : users.map(user => {
                     return (
                         <div key={user.id} className="d-flex w-100 mb-2">
-                            <li className="list-group-item w-100 mr-2">{user.name}</li>
+                            <li id={user.id} className="list-group-item w-100 mr-2"
+                                onClick={() => {
+                                   increment(user.id)
+                                }}
+                            >{user.counter ? `${user.name} - ${user.counter}` : user.name}</li>
                             <button type="button" className="btn btn-outline-danger"
                                     onClick={() => removeItem(user.id)}>Remove
                             </button>
