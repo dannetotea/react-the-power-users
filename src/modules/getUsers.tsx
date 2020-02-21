@@ -1,11 +1,23 @@
 import React, {useState, useEffect} from "react";
 import Search from "../components/search";
 
+class User {
+    public id: number = 0;
+    public name: string = '';
+    public counter: number = 0;
 
-const Users = () => {
-    const [users, setUsers] = useState([]);
-    const [filteredUsers, setFilteredUsers] = useState([]);
-    const [searchValue, setSearchValue] = useState('');
+    constructor (id:number, name:string, counter:number){
+        this.id = id;
+        this.name = name;
+        this.counter = counter;
+    }
+}
+
+
+const Users: React.FunctionComponent = () => {
+    const [users, setUsers]: [Array<User>, any] = useState([]);
+    const [filteredUsers, setFilteredUsers]: [Array<User>, any] = useState([]);
+    const [searchValue, setSearchValue]: [string, any] = useState('');
 
     useEffect(() => {
         usersGenerator();
@@ -15,24 +27,25 @@ const Users = () => {
         searchUsers()
     }, [searchValue]);
 
-    const usersGenerator = () => {
-        let users = [];
-        for (let i = 1; i <= 100; i++) {
-            users.push({id: i, name: `User ${i}`, counter: 0});
+    const usersGenerator = (): void => {
+        let users: Array<User> = [];
+        for (let i: number = 1; i <= 100; i++) {
+            const user: User = new User(i,`User ${i}`, 0)
+            users.push(user);
         }
         setUsers(users);
     };
 
-    const searchUsers = () => {
-        const result = users.filter(user => user.name.includes(searchValue));
+    const searchUsers = (): void => {
+        const result: Array<User> = users.filter(user => user.name.includes(searchValue));
         setTimeout(function () {
             setFilteredUsers(result)
         }, 300);
 
     };
 
-    const increment = (userId) => {
-        let newArray = [...users];
+    const increment  = (userId: number): void => {
+        let newArray: Array<User> = [...users];
         users.forEach((user,index) => {
             if(user.id !== userId){
                 newArray[index].counter++;
@@ -41,7 +54,7 @@ const Users = () => {
         setUsers(newArray);
     };
 
-    const removeItem = (userId) => {
+    const removeItem = (userId: number): void => {
         setUsers(users.filter(user => user.id !== userId));
         setFilteredUsers(filteredUsers.filter(user => user.id !== userId));
     };
@@ -62,7 +75,7 @@ const Users = () => {
                 }) : users.map(user => {
                     return (
                         <div key={user.id} className="d-flex w-100 mb-2">
-                            <li id={user.id} className="list-group-item w-100 mr-2"
+                            <li className="list-group-item w-100 mr-2"
                                 onClick={() => {
                                    increment(user.id)
                                 }}
